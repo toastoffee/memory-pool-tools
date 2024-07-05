@@ -12,6 +12,7 @@
 #include <cstdlib>
 #include <system_error>
 
+
 #ifndef MEMORY_POOL_TOOLS_MEMORY_POOL_HPP
 #define MEMORY_POOL_TOOLS_MEMORY_POOL_HPP
 
@@ -49,7 +50,7 @@ T *MemoryPool<T>::New() {
         if(_poolSize == 0){
             _poolSize = objSize * _nums;
             _pool = (char*) malloc(_poolSize);
-            
+
             if(_pool == nullptr){
                 throw std::bad_alloc();
             }
