@@ -45,23 +45,25 @@ T *MemoryPool<T>::New() {
     }
     else{
         // malloc new memory space
+        size_t objSize = sizeof(T) < sizeof(void*) ? sizeof(void*) : sizeof(T);
         if(_poolSize == 0){
-            size_t objSize = sizeof(T) < sizeof(void*) ? sizeof(void*) : sizeof(T);
-            _poolSize = sizeof(T) * _nums;
+            _poolSize = objSize * _nums;
             _pool = (char*) malloc(_poolSize);
-
+            
             if(_pool == nullptr){
                 throw std::bad_alloc();
             }
         }
 
         allocate = (T*)_pool;
-        size_t objSize = sizeof(T) < sizeof(void*) ? sizeof(void*) : sizeof(T);
+
+        _pool += objSize;
         _poolSize -= objSize;
     }
+    // construct T at supposed location
     new(allocate) T();
     if(allocate == nullptr){
-        int n = 0;
+        throw errno;
     }
     return allocate;
 }
